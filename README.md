@@ -39,6 +39,11 @@ and never logged in full — only metadata.
 > `exec` is the most powerful surface there is. When embedding it in an agent, gate it behind that
 > agent's tool-policy (trusted roles only).
 
+**Network note:** `--network none` only applies to **stdio**. In **HTTP/SSE** the container needs
+networking to serve its port, so sandboxed code inherits egress unless you deny it at the orchestrator —
+in k8s, a `NetworkPolicy` that allows ingress to the port and sets `egress: []`. See
+[quickstart](specs/001-exec-tool-v1/quickstart.md#сетевая-изоляция-в-httpsse).
+
 ## Run
 
 ```bash
