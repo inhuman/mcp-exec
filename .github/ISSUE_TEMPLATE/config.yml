@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Read the README first
+    url: https://github.com/inhuman/mcp-exec/blob/main/README.md
+    about: The exec tool contract, transports, env vars and the security model live here.
+  - name: Security model & quickstart
+    url: https://github.com/inhuman/mcp-exec/blob/main/specs/001-exec-tool-v1/quickstart.md
+    about: How to run safely (--network none, non-root, cap-drop) and the full env-var list.

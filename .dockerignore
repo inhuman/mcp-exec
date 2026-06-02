@@ -1,0 +1,14 @@
+.git/
+.idea/
+.vscode/
+.claude/
+.specify/
+specs/
+*.env
+.env*
+*.log
+*.test
+*.out
+mcp-exec
+CLAUDE.md
+PLAN.md
