@@ -51,9 +51,13 @@ Docker (recommended production posture):
 ```bash
 docker run --rm -i --network none --read-only --cap-drop ALL \
   --security-opt no-new-privileges --user 65532:65532 \
+  --tmpfs /tmp:rw,noexec,nosuid,size=64m \
   --memory 256m --pids-limit 128 --cpus 1 \
   idconstruct/mcp-exec
 ```
+
+`--tmpfs /tmp` is required: the rootfs is read-only, and each run needs a writable
+ephemeral workspace (cleaned up after).
 
 ### Optional auth (HTTP/SSE)
 
