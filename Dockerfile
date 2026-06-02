@@ -1,7 +1,8 @@
 # syntax=docker/dockerfile:1
 
 # Build stage — uses the committed vendor tree for reproducible builds.
-FROM golang:1.26-bookworm AS build
+# Pinned by multi-arch manifest-list digest (constitution X).
+FROM golang:1.26-bookworm@sha256:386d475a660466863d9f8c766fec64d7fdad3edac2c6a05020c09534d71edb4b AS build
 ARG VERSION=dev
 WORKDIR /src
 COPY . .
@@ -14,7 +15,9 @@ RUN CGO_ENABLED=0 go build -mod=vendor -trimpath \
 # intentionally when bumping the base; refresh via:
 #   docker buildx imagetools inspect python:3.13-slim
 FROM python:3.13-slim@sha256:b04b5d7233d2ad9c379e22ea8927cd1378cd15c60d4ef876c065b25ea8fb3bf3 AS runtime
-RUN pip install --no-cache-dir PyYAML Jinja2
+# Pinned exact versions so the sandbox toolset can't drift on rebuild (MarkupSafe
+# is Jinja2's runtime dep — pinned too so it doesn't float).
+RUN pip install --no-cache-dir PyYAML==6.0.3 Jinja2==3.1.6 MarkupSafe==3.0.3
 RUN useradd --uid 65532 --create-home --shell /usr/sbin/nologin sandbox
 COPY --from=build /out/mcp-exec /usr/local/bin/mcp-exec
 USER 65532
