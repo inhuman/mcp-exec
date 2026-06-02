@@ -40,9 +40,19 @@ and never logged in full — only metadata.
 > agent's tool-policy (trusted roles only).
 
 **Network note:** `--network none` only applies to **stdio**. In **HTTP/SSE** the container needs
-networking to serve its port, so sandboxed code inherits egress unless you deny it at the orchestrator —
-in k8s, a `NetworkPolicy` that allows ingress to the port and sets `egress: []`. See
-[quickstart](specs/001-exec-tool-v1/quickstart.md#сетевая-изоляция-в-httpsse).
+networking to serve its port, so sandboxed code would inherit egress — deny it at the orchestrator.
+In k8s, a `NetworkPolicy` that allows ingress to the port and denies all egress:
+
+```yaml
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata: { name: mcp-exec-lockdown }
+spec:
+  podSelector: { matchLabels: { app: mcp-exec } }
+  policyTypes: [Ingress, Egress]
+  ingress: [{ ports: [{ port: 8080 }] }]
+  egress: []   # deny all egress → sandbox has no network
+```
 
 ## Run
 
@@ -69,8 +79,18 @@ ephemeral workspace (cleaned up after).
 Set `MCP_EXEC_AUTH_TOKEN` to require every HTTP/SSE request to carry a matching `X-MCP-AUTH` header
 (constant-time compare; `401` otherwise). Empty token disables it. Not applicable to stdio.
 
-Configuration and the full env-var list live in `CLAUDE.md`; usage scenarios in
-`specs/001-exec-tool-v1/quickstart.md`.
+## Configuration
+
+| Env var | Purpose | Default |
+|---|---|---|
+| `MCP_EXEC_TRANSPORT` | `stdio` \| `http` \| `sse` | `stdio` |
+| `MCP_EXEC_ADDR` | listen address for http/sse | `:8080` |
+| `MCP_EXEC_DEFAULT_TIMEOUT_S` | default wall-clock timeout | `30` |
+| `MCP_EXEC_MAX_TIMEOUT_S` | timeout ceiling | `300` |
+| `MCP_EXEC_MAX_OUTPUT_BYTES` | combined stdout+stderr cap | `1048576` |
+| `MCP_EXEC_MAX_STDIN_BYTES` | stdin size cap | `1048576` |
+| `MCP_EXEC_PYTHON` | interpreter path | `python3` |
+| `MCP_EXEC_AUTH_TOKEN` | if set, http/sse require `X-MCP-AUTH` header (constant-time); empty = off | `` |
 
 ## Not in v1
 
