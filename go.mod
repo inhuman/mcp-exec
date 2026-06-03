@@ -2,7 +2,7 @@ module github.com/inhuman/mcp-exec
 
 go 1.26.1
 
-toolchain go1.26.3
+toolchain go1.26.4
 
 require (
 	github.com/inhuman/config v0.0.2
