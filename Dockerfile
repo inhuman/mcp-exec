@@ -26,6 +26,17 @@ RUN pip install --no-cache-dir \
     numpy==2.4.6 \
     pandas==3.0.3 \
     matplotlib==3.10.9
+# AST code analysis: grep-ast pulls tree-sitter-language-pack (~165 grammars incl.
+# Go/Python/TS/Java/...). Lets sandboxed code parse symbols/interfaces from source
+# TEXT (fed via stdin) — no on-disk repo needed. Used by MR code-review to verify
+# signatures against AST instead of the model guessing.
+# VERSION PIN: grep-ast 0.9.0 calls parser.parse(bytes(...)) (old tree-sitter API).
+# On python 3.13 language-pack >=1.8 pulls tree-sitter 0.25 (str API) → breaks with
+# "Parser has no attribute parse" / bytes-not-str. 1.6.2 is the newest that still
+# works on 3.13. Don't bump without re-testing TreeContext in the image.
+RUN pip install --no-cache-dir \
+    grep-ast==0.9.0 \
+    tree-sitter-language-pack==1.6.2
 RUN useradd --uid 65532 --create-home --shell /usr/sbin/nologin sandbox
 COPY --from=build /out/mcp-exec /usr/local/bin/mcp-exec
 USER 65532
