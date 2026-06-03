@@ -26,7 +26,7 @@ Works over three transports — **stdio / HTTP / SSE** — with an identical too
 
 - A non-zero `exit_code` or `timed_out=true` is a **normal result**, not a tool error. Only invalid
   input (empty `code`, oversized `stdin`) is a tool-call error.
-- Sandbox v1: Python 3 with stdlib + **PyYAML** + **Jinja2**.
+- Sandbox v1: Python 3 with stdlib + **PyYAML**, **Jinja2**, **Pillow**, **numpy**, **pandas**, **matplotlib**.
 
 ## Security model (invariants)
 
