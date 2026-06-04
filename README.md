@@ -1,6 +1,6 @@
 # mcp-exec
 
-[![Release](https://img.shields.io/github/v/release/inhuman/mcp-exec?style=flat-square)](https://github.com/inhuman/mcp-exec/releases/latest)
+[![Version](https://img.shields.io/github/v/tag/inhuman/mcp-exec?sort=semver&style=flat-square&label=version)](https://github.com/inhuman/mcp-exec/tags)
 [![Docker Pulls](https://img.shields.io/docker/pulls/idconstruct/mcp-exec?style=flat-square&logo=docker)](https://hub.docker.com/r/idconstruct/mcp-exec)
 [![Docker Image Version](https://img.shields.io/docker/v/idconstruct/mcp-exec?sort=semver&style=flat-square&logo=docker&label=image)](https://hub.docker.com/r/idconstruct/mcp-exec/tags)
 [![Build](https://img.shields.io/github/actions/workflow/status/inhuman/mcp-exec/docker-publish.yml?style=flat-square&logo=github)](https://github.com/inhuman/mcp-exec/actions/workflows/docker-publish.yml)
